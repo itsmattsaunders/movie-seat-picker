@@ -4,11 +4,33 @@ const count = document.getElementById('count')
 const total = document.getElementById('total')
 const movieSelect = document.getElementById('movie')
 
+populateUI();
+
 // the + in front of movieSelect variable parses
 // the string value of '10' into an interger
 // this does the same as parseInt.
 
 let ticketPrice = +movieSelect.value;
+
+//get data from local storage and populate UI
+//JSON Parse does the opposite of JSON Stringify
+function populateUI(){
+  const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+
+  if(selectedSeats !== null && selectedSeats.length > 0){
+    seats.forEach((seat, index) =>{
+      if(selectedSeats.indexOf(index) > -1){
+        seat.classList.add('selected');
+      }
+    })
+  }
+
+  const selectedMovieIndex = localStorage.getItem('selctedMovieIndex');
+
+  if(selectedMovieIndex !== null){
+    movieSelect.selectedIndex = selectedMovieIndex;
+  }
+}
 
 //movie select event
 movieSelect.addEventListener('change', e => {
