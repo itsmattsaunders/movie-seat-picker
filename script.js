@@ -13,20 +13,38 @@ let ticketPrice = +movieSelect.value;
 //movie select event
 movieSelect.addEventListener('change', e => {
   ticketPrice = +e.target.value;
+  console.log(e.target.selectedIndex, e.target.value)
+  setMovieData(e.target.selectedIndex, e.target.value)
   updateSelectedCount();
 })
+
+//save selected movie index and price
+function setMovieData(movieIndex, moviePrice){
+  localStorage.setItem('selectedMovieIndex', movieIndex);
+  localStorage.setItem('selectedMoviePrice', moviePrice);
+}
+
 
 //seat click event
 function updateSelectedCount(){
   const selectedSeats = document.querySelectorAll('.row .seat.selected');
   const selectedSeatsCount = selectedSeats.length;
+  // [...selectedSeats] is saving the nodelist of seats as an array
+  const seatsIndex = [...selectedSeats].map( seat => [...seats].indexOf(seat));
+
+  //using local storage to save slected seats to the browser
+  //json.stringify is conversting the array into a string
+  localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex))
 
   count.innerText = selectedSeatsCount;
   total.innerText = selectedSeatsCount * ticketPrice;
+
+  setMovieData(movieSelect.selectedIndex, movieSelect.value)
 }
 
 container.addEventListener('click', (e) =>{
-  if(e.target.classList.contains('seat') && !e.target.classList.contains('occupied')){
+  if(e.target.classList.contains('seat') && 
+    !e.target.classList.contains('occupied')){
     e.target.classList.toggle('selected')
 
     updateSelectedCount();
